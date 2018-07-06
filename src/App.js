@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Modal from 'react-modal';
+import './styles/styles.css';
+import {Header} from './components/Header';
+import {Action} from './components/Action';
+import {AddOption} from './components/AddOption';
+import {OptionModal} from './components/OptionModal';
+import {Options} from './components/Options';
 
 class App extends Component {
   constructor(props) {
@@ -87,90 +90,4 @@ class App extends Component {
     );
   }
 }
-
-const Header = (props) => {
-  return (
-    <div>
-      <h1>{props.appName}</h1>
-      <h3>{props.appTask}</h3>
-    </div>
-  );
-};
-
-Header.defaultProps = {
-  appName: "React App",
-  appTask: "eee"
-};
-
-const Action = (props) => {
-  return (
-    <div>
-      <button disabled={!props.hasOptions} onClick={props.handlePick}>What should I do?</button>
-    </div>
-  );
-};
-
-const OptionModal = (props) => (
-  <Modal 
-    isOpen={!!props.selectedOption} 
-    contentLabel="Selected Item"
-    onRequestClose={props.actionOkPress}
-  >
-    <h3>Selected Item</h3>
-    {props.selectedOption && <p>{props.selectedOption}</p>}
-    <button onClick={props.actionOkPress}>OK</button>
-  </Modal>
-);
-
-const Options = (props) => {
-  return (
-    <div>
-      Options
-  <button disabled={!props.options.length > 0} onClick={props.removeAll} >Remove All</button>
-      {props.options.map((option) => <Option key={option} opt={option} handleDeleteOption={props.handleDeleteOption} />)}
-    </div>
-  );
-};
-
-const Option = (props) => {
-  return (
-    <div>
-      {props.opt}
-      <button onClick={(e) => { props.handleDeleteOption(props.opt) }}>Remove</button>
-    </div>
-  );
-};
-
-class AddOption extends Component {
-  constructor(props) {
-    super(props);
-    this.addNewOption = this.addNewOption.bind(this);
-    this.state = {
-      error: undefined
-    };
-  }
-  addNewOption(e) {
-    e.preventDefault();
-    const newOption = e.target.elements.newOptionInput.value.trim();
-    e.target.elements.newOptionInput.value = "";
-    const error = this.props.handleNewOption(newOption);
-    this.setState(() => {
-      return {
-        error
-      };
-    });
-  }
-  render() {
-    return (
-      <div>
-        <form onSubmit={this.addNewOption}>
-          <input type="text" name="newOptionInput"></input>
-          <button>Add</button>
-        </form>
-        {this.state.error}
-      </div>
-    );
-  }
-}
-
 export default App;
